@@ -4,17 +4,13 @@ import com.apiautomationframework.base.BaseTest;
 import com.apiautomationframework.endpoints.APIConstants;
 import com.apiautomationframework.pojos.request.Booking;
 import com.apiautomationframework.pojos.response.BookingResponse;
-import com.apiautomationframework.pojos.response.TokenResponse;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
-import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.requestSpecification;
-
-public class TestIntegrationFlow1 extends BaseTest {
+public class TestIntegrationFlow4 extends BaseTest {
 
     // TestE2EFlow_01
 
@@ -24,11 +20,9 @@ public class TestIntegrationFlow1 extends BaseTest {
 
     // 2. Create Token -> token
 
-    // 3. Verify that the Create Booking is working - GET Request to bookingID
+    // 3. Update the booking ( bookingID, Token) - Need to get the token, bookingID from above request
 
-    // 4. Update the booking ( bookingID, Token) - Need to get the token, bookingID from above request
-
-    // 5. Delete the Booking - Need to get the token, bookingID from above request
+    // 4. Delete the Booking - Need to get the token, bookingID from above request
 
 
     @Test(groups = "qa", priority = 1)
@@ -49,30 +43,9 @@ public class TestIntegrationFlow1 extends BaseTest {
         iTestContext.setAttribute("bookingid", bookingResponse.getBookingid());
     }
 
-
     @Test(groups = "qa", priority = 2)
     @Owner("Rahul")
-    @Description("TC#INT1 - Step 2. Verify that the Booking By ID")
-    public void testVerifyBookingId(ITestContext iTestContext) {
-        Integer bookingid = (Integer) iTestContext.getAttribute("bookingid");
-
-        String basePathGET = APIConstants.CREATE_UPDATE_BOOKING_URL + "/" + bookingid;
-        System.out.println(basePathGET);
-
-        requestSpecification.basePath(basePathGET);
-        response = RestAssured
-                .given(requestSpecification)
-                .when().get();
-        validatableResponse = response.then().log().all();
-        // Validatable Assertion
-        validatableResponse.statusCode(200);
-
-    }
-
-
-    @Test(groups = "qa", priority = 3)
-    @Owner("Rahul")
-    @Description("TC#INT1 - Step 3. Verify Updated Booking by ID")
+    @Description("TC#INT1 - Step 2. Verify Updated Booking by ID")
     public void testUpdateBookingByID(ITestContext iTestContext) {
         Integer bookingid = (Integer) iTestContext.getAttribute("bookingid");
         String token = getToken();
@@ -98,9 +71,9 @@ public class TestIntegrationFlow1 extends BaseTest {
         assertActions.verifyStringKey(booking.getFirstname(), "Deepak");
     }
 
-    @Test(groups = "qa", priority = 4)
+    @Test(groups = "qa", priority = 3)
     @Owner("Rahul")
-    @Description("TC#INT1 - Step 4. Delete the Booking by ID")
+    @Description("TC#INT1 - Step 3. Delete the Booking by ID")
     public void testDeleteBookingById(ITestContext iTestContext) {
 
         Integer bookingid = (Integer) iTestContext.getAttribute("bookingid");

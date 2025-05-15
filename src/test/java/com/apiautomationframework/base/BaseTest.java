@@ -13,6 +13,8 @@ import io.restassured.specification.RequestSpecification;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
+import java.util.List;
+
 public class BaseTest {
     // CommonToAll Testcase
     //   // Base URL, Content Type - json - common
@@ -42,6 +44,29 @@ public class BaseTest {
                 .build().log().all();
 
 
+    }
+
+    public  String getToken(){
+        requestSpecification = RestAssured.given();
+        requestSpecification.baseUri(APIConstants.BASE_URL)
+                .basePath(APIConstants.AUTH_URL);
+        // Setting the payload
+        String payload = payloadManager.setAuthPayload();
+        // Get the Token
+        response = requestSpecification.contentType(ContentType.JSON).body(payload).when().post();
+        String token = payloadManager.getTokenFromJSON(response.asString());
+        return token;
+
+    }
+
+    public Integer getBookingId(){
+        requestSpecification = RestAssured.given();
+        requestSpecification.baseUri(APIConstants.BASE_URL)
+                .basePath(APIConstants.CREATE_UPDATE_BOOKING_URL);
+        response = requestSpecification.contentType(ContentType.JSON).when().get();
+        List<Integer> bookingIds = response.jsonPath().getList("bookingid");
+        Integer bookingId = bookingIds.get(0);
+        return bookingId;
     }
 
 

@@ -17,8 +17,8 @@ public class PayloadManager {
     // Serialization
     public String createPayloadBookingAsString(){
         Booking booking = new Booking();
-        booking.setFirstname("Pramod");
-        booking.setLastname("Dutta");
+        booking.setFirstname("Rahul");
+        booking.setLastname("Kumar");
         booking.setTotalprice(112);
         booking.setDepositpaid(true);
 
@@ -108,9 +108,34 @@ public class PayloadManager {
         return jsonStringBooking;
 
     }
+    //Serialization
+    public String fullUpdatePayloadAsString() {
+        Booking booking = new Booking();
+        booking.setFirstname("Deepak");
+        booking.setLastname("Kumar");
+        booking.setTotalprice(112);
+        booking.setDepositpaid(true);
 
+        Bookingdates bookingdates = new Bookingdates();
+        bookingdates.setCheckin("2024-02-01");
+        bookingdates.setCheckout("2024-02-05");
+        booking.setBookingdates(bookingdates);
+        booking.setAdditionalneeds("Breakfast");
+        return gson.toJson(booking);
+    }
 
+    public String partialUpdatePayloadAsString() {
+        Booking booking = new Booking();
+        booking.setFirstname("Tavi");
+        booking.setLastname("Yadav");
+        return gson.toJson(booking);
 
-
+    }
+    //DeSerialization
+    public Booking getResponseFromJSON(String getResponse){
+        gson = new Gson();
+        Booking booking = gson.fromJson(getResponse, Booking.class);
+        return booking;
+    }
 
 }
